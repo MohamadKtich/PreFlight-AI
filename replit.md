@@ -1,15 +1,22 @@
-# [Project name]
+# PreFlight AI
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Pre-production creative intelligence for evaluating video concepts against Oriane video evidence.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- Install dependencies with `pnpm install --frozen-lockfile`.
+- Start the managed workflows `artifacts/preflight-ai: web` and `artifacts/preflight-ai: API Server` using Replit's Run/workflows controls.
+- The web workflow runs `pnpm --filter @workspace/preflight-ai run dev` with `PORT=18108` and `BASE_PATH=/`.
+- The API workflow runs `pnpm --filter @workspace/api-server run dev` with `PORT=8080`.
+- Open the root preview `/`; `/api` is routed to Express by Replit's shared proxy, not a Vite proxy.
+- Service routing and environment settings are declared in `artifacts/preflight-ai/.replit-artifact/artifact.toml`.
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required secret for live evidence: `ORIANE_API_KEY`, stored server-side in Replit Secrets. Restart the API workflow after adding or changing it.
+- Without the key, the app opens but live searches fail; the existing UI explicitly labels any illustrative demo fallback. Live search success must not be claimed until tested with a valid key.
+- `DATABASE_URL` is managed by Replit for the shared DB package; the current search flow does not use database tables or require a schema push.
 
 ## Stack
 
@@ -22,7 +29,10 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/preflight-ai` — existing React/Vite application, visualizations, scoring, and creative outputs.
+- `artifacts/api-server` — Express API and server-side Oriane integration.
+- `lib/api-spec/openapi.yaml` — API contract; generated clients and validation live in sibling `lib` packages.
+- `artifacts/mockup-sandbox` — imported design sandbox; not needed to run the main app.
 
 ## Architecture decisions
 
@@ -31,7 +41,7 @@ _Populate as you build — short repo map plus pointers to the source-of-truth f
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Creative brief intake, evidence search, PreFlight scoring, opportunity mapping, evidence analytics, suggested hooks/scripts/storyboards, and presentation mode. Scores support decisions and do not guarantee campaign performance.
 
 ## User preferences
 
