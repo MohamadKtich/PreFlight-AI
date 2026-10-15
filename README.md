@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://hackathon-hub-ktichmohamad.replit.app/">Live Demo</a>
+  <a href="https://preflight-ai.replit.app/">Live Demo</a>
 </p>
 
 PreFlight AI helps brands, agencies, and creative teams evaluate a video concept **before production**. It searches real video evidence through Oriane, turns the retrieved signals into a transparent creative assessment, and helps the user decide whether to **GO, REVISE, or AVOID** before spending time and budget on filming.
@@ -177,7 +177,7 @@ PreFlight AI was built during the **Oriane × Replit hackathon** as a standalone
 
 ## Live Demo
 
-**PreFlight AI:** https://hackathon-hub-ktichmohamad.replit.app/
+**PreFlight AI:** https://preflight-ai.replit.app/
 
 ---
 
