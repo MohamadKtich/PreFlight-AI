@@ -1,0 +1,174 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: preflight
+    description: Live video evidence for PreFlight analysis
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /preflight/search:
+    post:
+      operationId: searchPreflight
+      tags: [preflight]
+      summary: Search live Oriane video evidence for a creative brief
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PreflightBrief"
+      responses:
+        "200":
+          description: Oriane search completed, including searches with no matches
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PreflightSearchResponse"
+        "400":
+          description: Invalid creative brief
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "502":
+          description: Oriane is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "429":
+          description: PreFlight search rate limit or concurrency limit reached
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    ApiError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+    PreflightBrief:
+      type: object
+      required: [brand, market, audience, goal, concept]
+      properties:
+        brand: { type: string, minLength: 1, maxLength: 100 }
+        market: { type: string, minLength: 1, maxLength: 100 }
+        audience: { type: string, minLength: 1, maxLength: 200 }
+        goal:
+          type: string
+          enum: [Product Launch, Awareness, Conversion, Education, Creator Campaign]
+        concept: { type: string, minLength: 1, maxLength: 1500 }
+    PreflightMatch:
+      type: object
+      required: [category, hook, format, comparableOpening, supported]
+      properties:
+        category: { type: string }
+        hook: { type: string }
+        format: { type: string }
+        comparableOpening:
+          type: boolean
+          description: True only when an observed caption or opening-transcript pattern defensibly matches the brief's hook pattern.
+        openingPattern: { type: string }
+        supported: { type: string }
+    PreflightVideoEvidence:
+      type: object
+      required: [id, relevanceLevel, usedForScoring, relevanceReasons, source, sourceLabel, sourceNote, match]
+      properties:
+        id: { type: string }
+        creator: { type: string }
+        profileHandle: { type: string }
+        platform: { type: string }
+        platformId: { type: string }
+        publishDate: { type: string }
+        views: { type: number }
+        likes: { type: number }
+        comments: { type: number }
+        shares: { type: number }
+        engagementRate: { type: number }
+        language: { type: string }
+        caption: { type: string }
+        transcript: { type: string }
+        thumbnailUrl: { type: string }
+        videoUrl: { type: string }
+        relevanceScore:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Deterministic heuristic relevance score, not model confidence.
+        relevanceLevel:
+          type: string
+          enum: [high, medium, low]
+        usedForScoring: { type: boolean }
+        relevanceReasons:
+          type: array
+          items: { type: string }
+        source:
+          type: string
+          enum: [live-oriane]
+        sourceLabel:
+          type: string
+          enum: [LIVE ORIANE EVIDENCE]
+        sourceNote: { type: string }
+        match:
+          $ref: "#/components/schemas/PreflightMatch"
+    PreflightSearchResponse:
+      type: object
+      required: [source, evidence, trace]
+      properties:
+        source:
+          type: string
+          enum: [live-oriane]
+        evidence:
+          type: array
+          items:
+            $ref: "#/components/schemas/PreflightVideoEvidence"
+        trace:
+          type: object
+          required: [intents, retrieved, used, excluded, capped, displayed]
+          properties:
+            intents:
+              type: array
+              items: { type: string }
+            retrieved: { type: integer, minimum: 0 }
+            used: { type: integer, minimum: 0 }
+            excluded: { type: integer, minimum: 0 }
+            capped:
+              type: integer
+              minimum: 0
+              description: Unique relevant records beyond the top-8 scoring selection, not counted as low relevance.
+            displayed:
+              type: integer
+              minimum: 0
+              description: Number of evidence records in the response evidence array.
+            partial: { type: boolean }
+
