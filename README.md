@@ -116,7 +116,45 @@ A polished presentation view designed for live demos, pitches, and stakeholder r
 
 ## Product Visuals
 
-The three visuals in the `assets/` directory are product-overview illustrations created to explain the PreFlight concept and workflow. The live application remains the source of truth for the implemented interface and functionality.
+The overview illustrations in `assets/` explain the concept and workflow. The **actual application screenshots** live in `assets/screenshots/` and are displayed above. Interface output varies by brief and source data.
+
+## Actual Application Screenshots
+
+Explore the implemented application, from creative brief to evidence-backed decision and production-ready creative directions.
+
+> These are **real screenshots of PreFlight AI**, not concept mockups. The example is CeraVe skincare; results depend on the retrieved sample and availability of the Oriane API.
+
+### Decision Readout
+
+<p align="center">
+  <img src="assets/screenshots/03-readout-score.png" alt="PreFlight AI score and evidence-backed decision readout" width="100%">
+</p>
+
+### Creative Brief
+
+<p align="center">
+  <img src="assets/screenshots/02-concept-intake.png" alt="PreFlight AI concept intake form" width="100%">
+</p>
+
+### Oriane Evidence
+
+<p align="center">
+  <img src="assets/screenshots/07-evidence-cards.png" alt="PreFlight AI video evidence cards and source details" width="100%">
+</p>
+
+### Creative Rewrite
+
+<p align="center">
+  <img src="assets/screenshots/08-rewrite-hook.png" alt="PreFlight AI alternative video hooks" width="100%">
+</p>
+
+### Storyboard
+
+<p align="center">
+  <img src="assets/screenshots/10-rewrite-storyboard.png" alt="PreFlight AI production storyboard" width="100%">
+</p>
+
+**[View all 10 screenshots, including the search trace, signal analysis, and script →](docs/SCREENSHOTS.md)**
 
 ## Tech Stack
 
@@ -169,7 +207,8 @@ API credentials are expected to remain server-side. This public repository inten
 - `artifacts/api-server` — server-side API and Oriane integration
 - `lib` — shared workspace packages
 - `scripts` — workspace scripts
-- `assets` — repository visuals
+- `assets` — overview illustrations and original application screenshots
+- `docs/SCREENSHOTS.md` — complete 10-image screenshot gallery
 
 ## Hackathon
 
